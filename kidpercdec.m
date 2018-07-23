@@ -67,9 +67,11 @@ tic;
 %Density to be added
 fieldSize = 181; % must be odd
 
-load kidestdata.csv %load human freeest data (order, sub, trialorder, label, reponse, key, ratio
+%load kidestdata.csv %load human freeest data (order, sub, trialorder, label, reponse, key, ratio
+load MTestdata.csv
 % difference, diff sq, diff abs, ratio error, outlier
-load kidansdata.csv  % load human comparison data 
+%load kidansdata.csv  % load human comparison data 
+load MTansdata.csv
 %(order, sub, RT, response, Label, trialOrder, key, diff, corretness, ratio, A, B, Ratio, label   
 load bestntcspec.csv 
 % load pilot EEG data. coloums trial number, Ochannel, P7, P3, Averaged, A,
@@ -81,7 +83,7 @@ load estkey.csv
 prompt = {'Enter number of Batches(10Subs):','Comparison trials per sub:','Estimation trials:','SubjectStart','No. of Subs'};% Dialog Box Input
 dlg_title = 'Input';
 num_lines = 1;
-def = {'1','90','40','1','5'};
+def = {'1','96','64','1','5'};
 answer = inputdlg(prompt,dlg_title,num_lines,def);
 N= 10; %Rounds per batch
 
@@ -110,7 +112,7 @@ display(SubTotal)
 
 for CurrentSub = 1:SubTotal
 %put Subject LOOP HERE?
-cd('/Users/Richard/Documents/MATLAB')
+%cd('/Users/Richard/Documents/MATLAB')
 time_u = 500; % time constant of dynamic field defined trial by trial
 time_mu_build = 500; time_mu_decay = 2000; % time constants of memory traces USE DECAY IN DECISION FIELD
 time_p1_build = 500; %build variables. start with slight bias to P1 being faster. Bigger is slower
@@ -146,31 +148,31 @@ tStimulusEnd = 450;  %may need an inter trial inverval
 
 %set current data to the Subject
 
-tbthumandata = zeros(90,15);
-esthumandata = zeros(40,13);
+tbthumandata = zeros(96,15);
+esthumandata = zeros(64,13);
 c = 1;
 d = 1;
 
 
-    for a = 1:length(kidansdata) 
-        if kidansdata(a,15) == SubID %MAY NEED TO CHANGE SUB IDS TO
+    for a = 1:length(MTansdata) 
+        if MTansdata(a,15) == SubID %MAY NEED TO CHANGE SUB IDS TO
                                     %NUMBER 1 - 30 WITH NO
                                     %SKIP. ADD COLUMN TO SUM DATA FILES
-            tbthumandata(c,:) = kidansdata(a,:);
+            tbthumandata(c,:) = MTansdata(a,:);
             
             c=c+1;
         end
             
     end
     
-    for a = 1:length(kidestdata);
-    if kidestdata(a,13) ==SubID
-        esthumandata(d,:) = kidestdata(a,:);
+    for a = 1:length(MTestdata);
+    if MTestdata(a,13) ==SubID
+        esthumandata(d,:) = MTestdata(a,:);
         d = d+1;
     end
     end
     
-esthumandata(:,6) = estkey(1:40,1); %puts EST trials in order
+esthumandata(:,6) = estkey(1:64,1); %puts EST trials in order
 
 
 % ANS DATA
@@ -1039,7 +1041,7 @@ header4 = {'time_u','s_inh','n_u','b_u','time_p2','S_excP2','W_inh','ntcw','Erro
 header5 = {'Sub','estimate','deviation_hum','abs_dev_hum','deivation_target','abs_dev_t','batch'};
 
 %fopen('/Users/richardprather/Dropbox/Rich/PratherLab/backup/Modeling/Matlab/tbtmodtrials.csv');
-cd('/Users/Richard/Dropbox/Rich/PratherLab/backup/Modeling/Matlab')
+%cd('/Users/Richard/Dropbox/Rich/PratherLab/backup/Modeling/Matlab')
 dirwrite = pwd;
 
 SubIDa = num2str(SubID);
